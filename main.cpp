@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <math.h>
 
-void Drawing(double *Table, int x, int y);
+void Drawing(double *Table, int Length, int Width);
 
-void Starting_Summing(int x, int y);
+void Starting_Summing(int Length, int Width);
 
 int Reading_One_Number();
 
@@ -18,13 +18,13 @@ int Check_String_Empty();
 
 void Clear_Buf();
 
-void Making_Each_Table(double **Table, int x, int y);
+void Making_Each_Table(double **Table, int Length, int Width);
 
-void Making_Table(double *Table, int x, int y);
+void Making_Table(double *Table, int Length, int Width);
 
-void Making_Table_Of_Games(double *Table, int x, int y);
+void Making_Table_Of_Games(double *Table, int Length, int Width);
 
-void Sum_Of_Two_Massives(double *Mas_1, double *Mas_2, double **Mas_3,  int x, int y);
+void Sum_Of_Two_Massives(double *Mas_1, double *Mas_2, double **Mas_3,  int Length, int Width);
 
 int Is_Close_To_Zero(double Number);
 
@@ -39,30 +39,30 @@ const double SMALL_DIFF = 1e-6;
 
 int main()
 {
-    unsigned x = 0;
-    unsigned y = 0;
+    unsigned Length = 0;
+    unsigned Width = 0;
     printf ("Type 1 if you want to make sum of two tables:\n");
     printf ("Type 2 if you want to make table of football games:\n");
     int Type_Of_Program = Reading_One_Number();
 
-    Reading(&x, &y);
-    printf("\nx = %d\ty = %d\n", x, y);
+    Reading(&Length, &Width);
+    printf("\nx = %d\ty = %d\n", Length, Width);
 
     if (Type_Of_Program == 1)
     {
         double *Table_1 = {};
-        Making_Each_Table( &Table_1,  x,  y);
+        Making_Each_Table( &Table_1,  Length,  Width);
 
         double *Table_2 = {};
-        Making_Each_Table( &Table_2,  x,  y);
+        Making_Each_Table( &Table_2,  Length,  Width);
 
         double *Table_3 = {};
-        Table_3 = (double *)calloc(x*y,  sizeof(double));
+        Table_3 = (double *)calloc(Length*Width,  sizeof(double));
 
-        Sum_Of_Two_Massives(Table_1, Table_2, &Table_3,  x, y);
+        Sum_Of_Two_Massives(Table_1, Table_2, &Table_3,  Length, Width);
 
 
-        Drawing(Table_3, x, y);
+        Drawing(Table_3, Length, Width);
 
         free(Table_1);
         free(Table_2);
@@ -72,9 +72,9 @@ int main()
     else
     {
         double *Table_4;
-        Table_4 = (double *)calloc(x*y,  sizeof(double));
-        Making_Table_Of_Games(Table_4, x, y);
-        Drawing(Table_4, x, y);
+        Table_4 = (double *)calloc(Length*Width,  sizeof(double));
+        Making_Table_Of_Games(Table_4, Length, Width);
+        Drawing(Table_4, Length, Width);
         free(Table_4);
     }
     printf("See Ya!");
@@ -103,6 +103,7 @@ int Reading_One_Number()
         else
         {
             printf("Wrong number\n");
+        if (!(Result_1*Result_2))
             Clear_Buf();
         }
     }
@@ -110,14 +111,14 @@ int Reading_One_Number()
 
 
 
-void Reading(unsigned int *x, unsigned int *y)
+void Reading(unsigned int *Length, unsigned int *Width)
 {
-    assert (*x != NAN);
-    assert (isfinite (*x) == 1);
-    assert (*y != NAN);
-    assert (isfinite (*y) == 1);
+    assert (*Length != NAN);
+    assert (isfinite (*Length) == 1);
+    assert (*Width != NAN);
+    assert (isfinite (*Width) == 1);
 
-    printf("Please print there Length \"X\" and Width \"Y\" of the table\n");
+    printf("Please print there Length \"Length\" and Width \"Width\" of the table\n");
 
     while (1)
     {
@@ -133,8 +134,8 @@ void Reading(unsigned int *x, unsigned int *y)
 
         if (Result_1 * Result_2 && x_Pos > 0 && y_Pos > 0)
         {
-            *x = x_Pos;
-            *y = y_Pos;
+            *Length = x_Pos;
+            *Width = y_Pos;
             break;
         }
 
@@ -202,53 +203,53 @@ void Clear_Buf()
 
 
 
-void Making_Each_Table(double **Table, int x, int y)
+void Making_Each_Table(double **Table, int Length, int Width)
 {
-    *Table = (double *)calloc(x*y,  sizeof(double));
+    *Table = (double *)calloc(Length*Width,  sizeof(double));
 
-    Making_Table(*Table, x, y);
+    Making_Table(*Table, Length, Width);
 }
 
-void Making_Table(double *Table, int x, int y)
+void Making_Table(double *Table, int Length, int Width)
 {
-    assert (x != NAN);
-    assert (isfinite (x) == 1);
-    assert (y != NAN);
-    assert (isfinite (y) == 1);
+    assert (Length != NAN);
+    assert (isfinite (Length) == 1);
+    assert (Width != NAN);
+    assert (isfinite (Width) == 1);
 
-    for (int i = 0; i < x; i++)
+    for (int i = 0; i < Length; i++)
     {
-        for (int j = 0; j < y ; j++)
+        for (int j = 0; j < Width ; j++)
         {
 
             double Number_Inpt = 0;
             Reading_Each_Number(&Number_Inpt, i, j);
-            *(double *)((size_t)Table + x * i * sizeof(double) + j * sizeof(double)) = Number_Inpt;
-            //   *((double *)Table + x * i + j) = Number_Inpt;
+            *(double *)((size_t)Table + Length * i * sizeof(double) + j * sizeof(double)) = Number_Inpt;
+            //   *((double *)Table + Length * i + j) = Number_Inpt;
         }
     }
 }
 
 
 
-void Making_Table_Of_Games(double *Table, int x, int y)
+void Making_Table_Of_Games(double *Table, int Length, int Width)
 {
-    assert (x != NAN);
-    assert (isfinite (x) == 1);
-    assert (y != NAN);
-    assert (isfinite (y) == 1);
+    assert (Length != NAN);
+    assert (isfinite (Length) == 1);
+    assert (Width != NAN);
+    assert (isfinite (Width) == 1);
 
     int Starting_Coefficient = 0;
-    for (int i = 0; i < x; i++)
+    for (int i = 0; i < Length; i++)
     {
 
-        for (int j = Starting_Coefficient; j < y ; j++)
+        for (int j = Starting_Coefficient; j < Width ; j++)
         {
 
             double Number_Inpt = 0;
             Reading_Each_Number(&Number_Inpt, i, j);
-            *(double *)((size_t)Table + x * i * sizeof(double) + j * sizeof(double)) = Number_Inpt;
-            //   *((double *)Table + x * i + j) = Number_Inpt;
+            *(double *)((size_t)Table + Length * i * sizeof(double) + j * sizeof(double)) = Number_Inpt;
+            //   *((double *)Table + Length * i + j) = Number_Inpt;
         }
         Starting_Coefficient += 1;
     }
@@ -256,15 +257,15 @@ void Making_Table_Of_Games(double *Table, int x, int y)
 
 
 
-void Drawing(double *Table, int x, int y)
+void Drawing(double *Table, int Length, int Width)
 {
-    for (int i = 0; i < x; i++)
+    for (int i = 0; i < Length; i++)
     {
-        for (int j = 0; j < y; j++)
+        for (int j = 0; j < Width; j++)
         {
 
             printf("|");
-            double Printing_Num = *(double *)((size_t)Table + x * i * sizeof(double) +
+            double Printing_Num = *(double *)((size_t)Table + Length * i * sizeof(double) +
                                                                          j * sizeof(double));
             if (Is_Close_To_Zero(Printing_Num))
                 printf("      ");
@@ -279,15 +280,15 @@ void Drawing(double *Table, int x, int y)
 
 
 
-void Sum_Of_Two_Massives(double *Mas_1, double *Mas_2, double **Mas_3,  int x, int y)
+void Sum_Of_Two_Massives(double *Mas_1, double *Mas_2, double **Mas_3,  int Length, int Width)
 {
-    for (int i = 0; i < x; i++)
+    for (int i = 0; i < Length; i++)
     {
-        for (int j = 0; j < y ; j++)
+        for (int j = 0; j < Width ; j++)
         {
-            *(double *)((size_t)*Mas_3 + x * i * sizeof(double) + j * sizeof(double)) =
-             *(double *)((size_t)Mas_1 + x * i * sizeof(double) + j * sizeof(double)) +
-             *(double *)((size_t)Mas_2 + x * i * sizeof(double) + j * sizeof(double));
+            *(double *)((size_t)*Mas_3 + Length * i * sizeof(double) + j * sizeof(double)) =
+             *(double *)((size_t)Mas_1 + Length * i * sizeof(double) + j * sizeof(double)) +
+             *(double *)((size_t)Mas_2 + Length * i * sizeof(double) + j * sizeof(double));
         }
     }
 }
